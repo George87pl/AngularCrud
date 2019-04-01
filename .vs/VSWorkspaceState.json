@@ -1,16 +1,13 @@
 {
   "ExpandedNodes": [
     "",
-    "\\node_modules\\bootstrap\\dist",
-    "\\node_modules\\bootstrap\\dist\\css",
-    "\\node_modules\\ngx-bootstrap",
-    "\\node_modules\\ngx-bootstrap\\datepicker",
     "\\src",
     "\\src\\app",
     "\\src\\app\\employees",
     "\\src\\app\\models",
+    "\\src\\app\\shared",
     "\\src\\assets"
   ],
-  "SelectedNode": "\\angular.json",
+  "SelectedNode": "\\src\\app\\employees\\display-employee.component.css",
   "PreviewInSolutionExplorer": false
 }
