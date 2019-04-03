@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Employee } from '../models/employee.model';
-import { EmployeeService } from './employee.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   templateUrl: './list-employees.component.html',
@@ -10,16 +9,44 @@ import { Router } from '@angular/router';
 export class ListEmployeesComponent implements OnInit {
 
   employees: Employee[];
-  searchTerm: string;
+  filteredEmployees: Employee[];
+  private _searchTerm: string;
 
-  constructor(private _employeeService: EmployeeService, private _router: Router) { }
-
-  ngOnInit() {
-    this.employees = this._employeeService.getEmployees();
+  get searchTerm(): string {
+    return this._searchTerm;
   }
 
-  onClick(id: number) {
-    this._router.navigate(['/employees', id]);
+  set searchTerm(val: string) {
+    this._searchTerm = val;
+    this.filteredEmployees = this.filtereEmployees(val);
   }
 
+  filtereEmployees(searchString: string) {
+    return this.employees.filter(e => e.name.toLowerCase().indexOf(searchString.toLowerCase()) !== -1);
+  }
+
+  constructor(
+    private _router: Router,
+    private _route: ActivatedRoute) {
+
+    this.employees = this._route.snapshot.data['employeeList'];
+
+    if (this._route.snapshot.queryParamMap.has('searchTerm')) {
+      this._searchTerm = this._route.snapshot.queryParamMap.get('searchTerm');
+      this.filteredEmployees = this.filtereEmployees(this._searchTerm);
+    } else {
+      this.filteredEmployees = this.employees;
+    }
+  }
+
+  handleDelete(id: number) {
+
+    const i = this.filteredEmployees.findIndex(e => e.id === id);
+    if (i !== -1) {
+      this.filteredEmployees.splice(i, 1);
+    }
+  }
+
+  ngOnInit() {  
+  }
 }

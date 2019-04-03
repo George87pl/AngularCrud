@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Employee } from '../models/employee.model';
+import { of, Observable } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 @Injectable()
 export class EmployeeService {
@@ -40,8 +42,8 @@ export class EmployeeService {
     }
   ];
 
-  getEmployees(): Employee[] {
-    return this.listEmployees;
+  getEmployees(): Observable<Employee[]> {
+    return of(this.listEmployees).pipe(delay(2000));
   }
 
   getEmployee(id: number): Employee {
@@ -49,6 +51,28 @@ export class EmployeeService {
   }
 
   save(employee: Employee) {
-    this.listEmployees.push(employee);
+
+    if (employee.id === null) {
+      if (this.listEmployees.length > 0) {
+        const maxId = this.listEmployees.reduce(function(e1, e2) {
+          return (e1.id > e2.id) ? e1 : e2;
+        }).id;
+
+        employee.id = maxId + 1;
+      } else {
+        employee.id = 1;
+      }
+      this.listEmployees.push(employee);
+    } else {
+      const foundIndex = this.listEmployees.findIndex(e => e.id === employee.id);
+      this.listEmployees[foundIndex] = employee;
+    }
+  }
+
+  deleteEmployee(id: number) {
+    const i = this.listEmployees.findIndex(e => e.id === id);
+    if (i !== -1) {
+      this.listEmployees.splice(i, 1);
+    }
   }
 }

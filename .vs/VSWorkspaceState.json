@@ -4,10 +4,8 @@
     "\\src",
     "\\src\\app",
     "\\src\\app\\employees",
-    "\\src\\app\\models",
-    "\\src\\app\\shared",
-    "\\src\\assets"
+    "\\src\\app\\shared"
   ],
-  "SelectedNode": "\\src\\app\\employees\\display-employee.component.css",
+  "SelectedNode": "\\src\\app\\shared\\accordion.component.css",
   "PreviewInSolutionExplorer": false
 }
